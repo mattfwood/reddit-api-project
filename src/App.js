@@ -15,8 +15,16 @@ const { Header, Content, Footer } = Layout;
 class App extends Component {
   state = {
     subredditInput: '',
-    subreddit: '',
+    subreddit: 'hearthstone',
     posts: [],
+  };
+
+  componentDidMount = async () => {
+    const { subreddit } = this.state;
+    const res = await axios.get(
+      `https://www.reddit.com/r/${subreddit}/hot.json`
+    );
+    this.setState({ posts: res.data.data.children });
   };
 
   handleSubmit = async subreddit => {
@@ -25,7 +33,7 @@ class App extends Component {
       const res = await axios.get(
         `https://www.reddit.com/r/${subreddit}/hot.json`
       );
-      console.log(res);
+      // console.log(res);
       this.setState({ posts: res.data.data.children });
     } catch (error) {
       throw new Error(error);
@@ -34,14 +42,14 @@ class App extends Component {
 
   render() {
     return (
-       <Layout className="layout">
+      <Layout className="layout">
         <Header>
           {/* <form onSubmit={this.handleSubmit}> */}
-            <Search
-              placeholder="Choose Subreddit"
-              onSearch={value => this.handleSubmit(value)}
-              enterButton
-            />
+          <Search
+            placeholder="Choose Subreddit"
+            onSearch={value => this.handleSubmit(value)}
+            enterButton
+          />
           {/* </form> */}
         </Header>
         {this.state.posts.length > 0 && (
