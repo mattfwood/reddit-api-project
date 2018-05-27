@@ -15,7 +15,7 @@ const { Header, Content, Footer } = Layout;
 class App extends Component {
   state = {
     subredditInput: '',
-    subreddit: 'hearthstone',
+    subreddit: '2healthbars',
     posts: [],
   };
 
@@ -24,6 +24,7 @@ class App extends Component {
     const res = await axios.get(
       `https://www.reddit.com/r/${subreddit}/hot.json`
     );
+    console.log(res);
     this.setState({ posts: res.data.data.children });
   };
 
@@ -33,7 +34,7 @@ class App extends Component {
       const res = await axios.get(
         `https://www.reddit.com/r/${subreddit}/hot.json`
       );
-      // console.log(res);
+      console.log(res);
       this.setState({ posts: res.data.data.children });
     } catch (error) {
       throw new Error(error);
@@ -53,7 +54,7 @@ class App extends Component {
           {/* </form> */}
         </Header>
         {this.state.posts.length > 0 && (
-          <Carousel vertical>
+          <Carousel>
             {this.state.posts.map(post => <Post post={post} />)}
           </Carousel>
         )}
